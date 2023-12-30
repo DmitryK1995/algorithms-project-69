@@ -1,16 +1,6 @@
 import search from "./search";
 
-test("search Test 1", () => {
-	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
-	const doc2 = { id: "doc2", text: "Don't shoot shoot shoot that thing at me." };
-	const doc3 = { id: "doc3", text: "I'm your shooter." };
-
-	const docs = [doc1, doc2, doc3];
-
-	expect(search(docs, "shoot")).toEqual(["doc1", "doc2"]);
-});
-
-test("search Test 2", () => {
+test("search empty searchString", () => {
 	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
 	const doc2 = { id: "doc2", text: "Don't shoot shoot shoot that thing at me." };
 	const doc3 = { id: "doc3", text: "I'm your shooter." };
@@ -20,7 +10,7 @@ test("search Test 2", () => {
 	expect(search(docs, "")).toEqual([]);
 });
 
-test("search Test 3", () => {
+test("search punctuation", () => {
 	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
 	const doc2 = { id: "doc2", text: "Don't shoot shoot shoot that thing at me." };
 	const doc3 = { id: "doc3", text: "I'm your shooter." };
@@ -30,11 +20,11 @@ test("search Test 3", () => {
 	expect(search(docs, "shooter")).toEqual(["doc3"]);
 });
 
-test("search Test 4", () => {
+test("search empty docs list", () => {
 	expect(search([], "random")).toEqual([]);
 });
 
-test("search Test 5", () => {
+test("search without punctuation", () => {
 	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
 	const doc2 = { id: "doc2", text: "Don't shoot shoot shoot that thing at me." };
 	const doc3 = { id: "doc3", text: "I'm your shooter." };
@@ -44,7 +34,7 @@ test("search Test 5", () => {
 	expect(search(docs, "pint")).toEqual(["doc1"]);
 });
 
-test("search Test 6", () => {
+test("search with punctuation", () => {
 	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
 	const doc2 = { id: "doc2", text: "Don't shoot shoot shoot that thing at me." };
 	const doc3 = { id: "doc3", text: "I'm your shooter." };
@@ -52,4 +42,14 @@ test("search Test 6", () => {
 	const docs = [doc1, doc2, doc3];
 
 	expect(search(docs, "pint!")).toEqual(["doc1"]);
+});
+
+test("search relevance", () => {
+	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
+	const doc2 = { id: "doc2", text: "Don't shoot shoot shoot that thing at me." };
+	const doc3 = { id: "doc3", text: "I'm your shooter." };
+
+	const docs = [doc1, doc2, doc3];
+
+	expect(search(docs, "shoot")).toEqual(["doc2", "doc1"]);
 });
