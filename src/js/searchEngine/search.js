@@ -1,5 +1,5 @@
 const search = (arrOfDocuments, searchString) => {
-	const searchStringOnlyLetters = searchString.replace(/[^a-zA-Z]+/g, "");
+	const arrayOfSearchWords = searchString.split(" ");
 
 	const wordsRepeatCount = arrOfDocuments.reduce((acc, document) => {
 		const arrayOfWords = document.text.split(" ");
@@ -7,7 +7,7 @@ const search = (arrOfDocuments, searchString) => {
 		arrayOfWords.forEach(word => {
 			const currentWordOnlyLetters = word.replace(/[^a-zA-Z]+/g, "");
 
-			if (currentWordOnlyLetters !== searchStringOnlyLetters) return;
+			if (!arrayOfSearchWords.some(word => currentWordOnlyLetters == word.replace(/[^a-zA-Z]+/g, ""))) return;
 
 			if (!acc[document.id]) {
 				acc[document.id] = 1;
@@ -18,10 +18,7 @@ const search = (arrOfDocuments, searchString) => {
 	}, {});
 
 	const sorted = Object.entries(wordsRepeatCount).sort(([, a], [, b]) => b - a);
-	console.log(
-		"sorted",
-		sorted.map(([id]) => id),
-	);
+
 	return sorted.map(([id]) => id);
 };
 
