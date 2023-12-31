@@ -1,4 +1,4 @@
-import search from "./search";
+import search from "../../index";
 
 test("search empty searchString", () => {
 	const doc1 = { id: "doc1", text: "I can't shoot straight unless I've had a pint!" };
