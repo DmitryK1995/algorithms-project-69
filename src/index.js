@@ -1,17 +1,6 @@
-function wordRepeatCount(text, searchWord, arr, documentsLength) {
-	const splittedText = text.split(" ");
-	const countOfWords = splittedText.length;
-	const lengthOfOccuringDocuments = arr[searchWord].length;
+import { metricCalculate } from "./helpers/search-engine-helpers";
 
-	const wordRepeated = splittedText.reduce(
-		(acc, word) => (word.replace(/[^a-zA-Z]+/g, "") == searchWord.replace(/[^a-zA-Z]+/g, "") ? acc + 1 : acc),
-		0,
-	);
-
-	return (wordRepeated / countOfWords) * Math.log(documentsLength / lengthOfOccuringDocuments);
-}
-
-const search = (arrOfDocuments, searchString) => {
+const searchEngine = (arrOfDocuments, searchString) => {
 	const arrayOfSearchWords = searchString.split(" ");
 
 	const index = arrOfDocuments.reduce((acc, document) => {
@@ -44,12 +33,12 @@ const search = (arrOfDocuments, searchString) => {
 		return acc;
 	}, {});
 
-	const sorted = Object.entries(arrayOfFound).sort(([docName1, a], [docName2, b]) => {
+	const sortedDocsByRelevance = Object.entries(arrayOfFound).sort(([docName1, a], [docName2, b]) => {
 		if (a === b) {
 			const relevanceCoefA = arrayOfSearchWords.reduce(
 				(acc, word) =>
 					acc +
-					wordRepeatCount(
+					metricCalculate(
 						arrOfDocuments.find(el => el.id == docName1).text,
 						word,
 						index,
@@ -61,7 +50,7 @@ const search = (arrOfDocuments, searchString) => {
 			const relevanceCoefB = arrayOfSearchWords.reduce(
 				(acc, word) =>
 					acc +
-					wordRepeatCount(
+					metricCalculate(
 						arrOfDocuments.find(el => el.id == docName2).text,
 						word,
 						index,
@@ -76,7 +65,7 @@ const search = (arrOfDocuments, searchString) => {
 		return b - a;
 	});
 
-	return sorted.map(([id]) => id);
+	return sortedDocsByRelevance.map(([id]) => id);
 };
 
-export default search;
+export default searchEngine;
