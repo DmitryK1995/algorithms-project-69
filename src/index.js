@@ -1,13 +1,10 @@
 export function metricCalculate(text, searchWord, arr, docsCount) {
-	const splittedText = text.split(" ");
+	const splittedText = text.match(/\w+/g);
 
 	const countOfWords = splittedText.length;
 	const termCount = arr[searchWord].length;
 
-	const wordRepeated = splittedText.reduce(
-		(acc, word) => (word.replace(/[^a-zA-Z]+/g, "") === searchWord.replace(/[^a-zA-Z]+/g, "") ? acc + 1 : acc),
-		0,
-	);
+	const wordRepeated = splittedText.reduce((acc, word) => (word === searchWord ? acc + 1 : acc), 0);
 
 	console.log(text, searchWord, arr, docsCount);
 
@@ -15,13 +12,15 @@ export function metricCalculate(text, searchWord, arr, docsCount) {
 }
 
 const searchEngine = (arrOfDocuments, searchString) => {
-	const arrayOfSearchWords = searchString.split(" ");
+	const arrayOfSearchWords = searchString.match(/\w+/g);
+
+	if (!arrayOfSearchWords) return [];
 
 	const index = arrOfDocuments.reduce((acc, document) => {
 		const arrayOfWords = document.text.split(" ");
 
 		arrayOfWords.forEach(word => {
-			const currentWordOnlyLetters = word.replace(/[^a-zA-Z]+/g, "");
+			const currentWordOnlyLetters = word.match(/\w+/g)[0];
 
 			if (!acc[currentWordOnlyLetters]) {
 				acc[currentWordOnlyLetters] = [].concat(document.id);
@@ -33,7 +32,7 @@ const searchEngine = (arrOfDocuments, searchString) => {
 	}, {});
 
 	const arrayOfFound = arrayOfSearchWords.reduce((acc, word) => {
-		const searchWord = word.replace(/[^a-zA-Z]+/g, "");
+		const searchWord = word;
 
 		if (index[searchWord])
 			index[searchWord].forEach(docId => {
