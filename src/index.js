@@ -4,9 +4,10 @@ export function metricCalculate(text, searchWord, arr, docsCount) {
 	const countOfWords = splittedText.length;
 	const termCount = arr[searchWord].length;
 
-	const wordRepeated = splittedText.reduce((acc, word) => (word === searchWord ? acc + 1 : acc), 0);
-
-	console.log(text, searchWord, arr, docsCount);
+	const wordRepeated = splittedText.reduce(
+		(acc, word) => (word.toLowerCase() === searchWord.toLowerCase() ? acc + 1 : acc),
+		0,
+	);
 
 	return (wordRepeated / countOfWords) * Math.log2(1 + (docsCount - termCount + 1) / (termCount + 0.5));
 }
@@ -25,18 +26,18 @@ const searchEngine = (arrOfDocuments, searchString) => {
 			if (!currentWordOnlyLetters) return;
 
 			if (!acc[currentWordOnlyLetters]) {
-				acc[currentWordOnlyLetters[0]] = [].concat(document.id);
+				acc[currentWordOnlyLetters[0].toLowerCase()] = [].concat(document.id);
 			} else {
-				acc[currentWordOnlyLetters[0]].includes(document.id)
+				acc[currentWordOnlyLetters[0].toLowerCase()].includes(document.id)
 					? acc
-					: acc[currentWordOnlyLetters[0]].push(document.id);
+					: acc[currentWordOnlyLetters[0].toLowerCase()].push(document.id);
 			}
 		});
 		return acc;
 	}, {});
 
 	const arrayOfFound = arrayOfSearchWords.reduce((acc, word) => {
-		const searchWord = word;
+		const searchWord = word.toLowerCase();
 
 		if (index[searchWord])
 			index[searchWord].forEach(docId => {
