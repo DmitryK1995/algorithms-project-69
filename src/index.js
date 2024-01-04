@@ -20,12 +20,16 @@ const searchEngine = (arrOfDocuments, searchString) => {
 		const arrayOfWords = document.text.split(" ");
 
 		arrayOfWords.forEach(word => {
-			const currentWordOnlyLetters = word.match(/\w+/g)[0];
+			const currentWordOnlyLetters = word.match(/\w+/g);
+
+			if (!currentWordOnlyLetters) return;
 
 			if (!acc[currentWordOnlyLetters]) {
-				acc[currentWordOnlyLetters] = [].concat(document.id);
+				acc[currentWordOnlyLetters[0]] = [].concat(document.id);
 			} else {
-				acc[currentWordOnlyLetters].includes(document.id) ? acc : acc[currentWordOnlyLetters].push(document.id);
+				acc[currentWordOnlyLetters[0]].includes(document.id)
+					? acc
+					: acc[currentWordOnlyLetters[0]].push(document.id);
 			}
 		});
 		return acc;
