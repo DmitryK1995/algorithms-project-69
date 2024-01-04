@@ -4,7 +4,13 @@ export function metricCalculate(text, searchWord, arr, docsCount) {
 	const countOfWords = splittedText.length;
 	const termCount = arr[searchWord].length;
 
-	const wordRepeated = splittedText.reduce((acc, word) => (word == searchWord ? acc + 1 : acc), 0);
+	const wordRepeated = splittedText.reduce(
+		(acc, word) => (word.replace(/[^a-zA-Z]+/g, "") === searchWord.replace(/[^a-zA-Z]+/g, "") ? acc + 1 : acc),
+		0,
+	);
+
+	console.log(text, searchWord, arr, docsCount);
+
 	return (wordRepeated / countOfWords) * Math.log2(1 + (docsCount - termCount + 1) / (termCount + 0.5));
 }
 
