@@ -9,7 +9,8 @@ export function metricCalculate(text, searchWord, arr, docsCount) {
   );
 
   return (
-    wordRepeated *
+    wordRepeated 
+	*
     Math.log2(1 + (docsCount - termCount + 1) / (termCount + 0.5))
   );
 }
