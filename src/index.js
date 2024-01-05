@@ -43,14 +43,15 @@ const searchEngine = (arrOfDocuments, searchString) => {
   const arrayOfFound = arrayOfSearchWords.reduce((acc, word) => {
     const searchWord = word;
 
-    if (index[searchWord])
-      index[searchWord].forEach((docId) => {
-        if (!acc[docId]) {
-          acc[docId] = 1;
-        } else {
-          acc[docId] += 1;
-        }
-      });
+    if (index[searchWord]) {
+    	index[searchWord].forEach((docId) => {
+        	if (!acc[docId]) {
+          		acc[docId] = 1;
+        	} else {
+          		acc[docId] += 1;
+        	}
+    	});
+	}
 
     return acc;
   }, {});
@@ -60,9 +61,10 @@ const searchEngine = (arrOfDocuments, searchString) => {
       if (a === b) {
         const relevanceCoefA = arrayOfSearchWords.reduce(
           (acc, word) =>
-            acc +
+            acc 
+			+
             metricCalculate(
-              arrOfDocuments.find((el) => el.id == docName1).text,
+              arrOfDocuments.find((el) => el.id === docName1).text,
               word,
               index,
               arrOfDocuments.length
@@ -72,20 +74,23 @@ const searchEngine = (arrOfDocuments, searchString) => {
 
         const relevanceCoefB = arrayOfSearchWords.reduce(
           (acc, word) =>
-            acc +
+            acc 
+			+
             metricCalculate(
-              arrOfDocuments.find((el) => el.id == docName2).text,
+              arrOfDocuments.find((el) => el.id === docName2).text,
               word,
               index,
               arrOfDocuments.length
             ),
           0
+		  
         );
 
         return relevanceCoefB - relevanceCoefA;
       }
 
       return b - a;
+
     }
   );
 
