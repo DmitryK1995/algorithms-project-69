@@ -5,7 +5,7 @@ export function metricCalculate(text, searchWord, arr, docsCount) {
 
   const wordRepeated = splittedText.reduce(
     (acc, word) => (word === searchWord ? acc + 1 : acc),
-    0,
+    0
   );
 
   return (
@@ -65,9 +65,9 @@ const searchEngine = (arrOfDocuments, searchString) => {
               arrOfDocuments.find((el) => el.id == docName1).text,
               word,
               index,
-              arrOfDocuments.length,
+              arrOfDocuments.length
             ),
-          0,
+          0
         );
 
         const relevanceCoefB = arrayOfSearchWords.reduce(
@@ -77,16 +77,16 @@ const searchEngine = (arrOfDocuments, searchString) => {
               arrOfDocuments.find((el) => el.id == docName2).text,
               word,
               index,
-              arrOfDocuments.length,
+              arrOfDocuments.length
             ),
-          0,
+          0
         );
 
         return relevanceCoefB - relevanceCoefA;
       }
 
       return b - a;
-    },
+    }
   );
 
   return sortedDocsByRelevance.map(([id]) => id);
