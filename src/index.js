@@ -1,15 +1,11 @@
 export function metricCalculate(text, searchWord, arr, docsCount) {
 	const splittedText = text.match(/\w+/g);
 
-	const countOfWords = splittedText.length;
 	const termCount = arr[searchWord].length;
 
-	const wordRepeated = splittedText.reduce(
-		(acc, word) => (word.toLowerCase() === searchWord.toLowerCase() ? acc + 1 : acc),
-		0,
-	);
+	const wordRepeated = splittedText.reduce((acc, word) => (word === searchWord ? acc + 1 : acc), 0);
 
-	return (wordRepeated / countOfWords) * Math.log2(1 + (docsCount - termCount + 1) / (termCount + 0.5));
+	return wordRepeated * Math.log2(1 + (docsCount - termCount + 1) / (termCount + 0.5));
 }
 
 const searchEngine = (arrOfDocuments, searchString) => {
@@ -21,23 +17,23 @@ const searchEngine = (arrOfDocuments, searchString) => {
 		const arrayOfWords = document.text.split(" ");
 
 		arrayOfWords.forEach(word => {
-			const currentWordOnlyLetters = word.match(/\w+/g);
+			const currentWordOnlyLetter = word.match(/\w+/g);
 
-			if (!currentWordOnlyLetters) return;
+			if (!currentWordOnlyLetter) return;
+
+			const currentWordOnlyLetters = currentWordOnlyLetter.join("");
 
 			if (!acc[currentWordOnlyLetters]) {
-				acc[currentWordOnlyLetters[0].toLowerCase()] = [].concat(document.id);
+				acc[currentWordOnlyLetters] = [].concat(document.id);
 			} else {
-				acc[currentWordOnlyLetters[0].toLowerCase()].includes(document.id)
-					? acc
-					: acc[currentWordOnlyLetters[0].toLowerCase()].push(document.id);
+				acc[currentWordOnlyLetters].includes(document.id) ? acc : acc[currentWordOnlyLetters].push(document.id);
 			}
 		});
 		return acc;
 	}, {});
 
 	const arrayOfFound = arrayOfSearchWords.reduce((acc, word) => {
-		const searchWord = word.toLowerCase();
+		const searchWord = word;
 
 		if (index[searchWord])
 			index[searchWord].forEach(docId => {
