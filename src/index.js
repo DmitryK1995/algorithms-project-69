@@ -20,19 +20,19 @@ const searchEngine = (arrOfDocuments, searchString) => {
   if (!arrayOfSearchWords) return [];
 
   const index = arrOfDocuments.reduce((acc, document) => {
-    const arrayOfWords = document.text.split(" ");
+    const arrayOfWords = document.text.split(' ');
 
     arrayOfWords.forEach((word) => {
       const currentWordOnlyLetter = word.match(/\w+/g);
 
       if (!currentWordOnlyLetter) return;
 
-      const currentWordOnlyLetters = currentWordOnlyLetter.join("");
+      const currentWordOnlyLetters = currentWordOnlyLetter.join('');
 
       if (!acc[currentWordOnlyLetters]) {
         acc[currentWordOnlyLetters] = [].concat(document.id);
       } else {
-        acc[currentWordOnlyLetters].includes(document.id)
+        return acc[currentWordOnlyLetters].includes(document.id)
           ? acc
           : acc[currentWordOnlyLetters].push(document.id);
       }
